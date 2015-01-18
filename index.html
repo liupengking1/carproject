@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Carproject : Embedded car racing project">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Carproject</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/liupengking1/carproject">View on GitHub</a>
+
+          <h1 id="project_title">Carproject</h1>
+          <h2 id="project_tagline">Embedded car racing project</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/liupengking1/carproject/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/liupengking1/carproject/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="carproject" class="anchor" href="#carproject" aria-hidden="true"><span class="octicon octicon-link"></span></a>carproject</h1>
+
+<p>Embedded car racing project at Aalto University.</p>
+
+<h3>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<p>When car is powered on, it displays initialization messages on the LCD screen.
+  When everything is ready, display shows "Drive Test." "Press button..."
+  Drive test can be started by pressing button. Car starts driving
+  within ~one second after button press. </p>
+
+<p>Test ends automatically after 90 seconds. Test can be cancelled at any
+  time by pressing button. Test will also stop if car loses track for
+  several seconds.
+  When test ends, display shows "*** END ***" "Press button ...".
+  Test can be restarted by following the instructions on the LCD display.</p>
+
+<p>During drive test LCD display shows some diagnostics.
+  First line:  "005: d-2 w03"    (= remaining test time, stripe position, stripe width)
+  Second line: "Speed 40 cm/s"   (= current speed reported by tachometer)</p>
+
+<p>There are several tests to verify hardware drivers. Tests can be enabled from main.c 
+  and are not covered by this document.</p>
+
+<h3>
+<a id="algorithm-description" class="anchor" href="#algorithm-description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Algorithm description</h3>
+
+<p>Driving algorithm is very simple. It constantly tracks stripe position and
+  changes car direction when stripe is not in the middle.</p>
+
+<p>Speed is controlled every 30 ms. Speed is faster when stripe is on the middle,
+  and slows down relative to stripe position.
+  Speed is also reduced when stripe is wide (we're not going to stripe direction),
+  when stripe is lost and when stripe position moves fast.</p>
+
+<p>Driving algorithm uses following functions:</p>
+
+<p>control the car:
+    car_set_speed()  : set car speed (in cm/s), maintained by tacometer HW driver
+    car_set_dir()    : set car direction (in degrees)</p>
+
+<p>gather information about track:
+    car_stripe_pos()  : current stripe position, -7...7, 0 = center
+    car_stripe_width(): current stripe width (number of active sensors)</p>
+
+<p>user interaction:
+    car_button_pressed()
+    car_lcd_printf()
+    car_lcd_message()
+    car_current_speed()</p>
+
+<pre><code>sleep_ms()
+car_time_ms()
+</code></pre>
+
+<h3>
+<a id="implementaton" class="anchor" href="#implementaton" aria-hidden="true"><span class="octicon octicon-link"></span></a>Implementaton</h3>
+
+<p>Implementation is divided to three layers:</p>
+
+<p>#### Hardware drivers
+    Hardware drivers handle all interaction with hardware.
+    Interface hides ports, interrupts, delays and hardware settings.</p>
+
+<p>#### Hardware abstraction layer
+    This layer converts all hardware-specific units to "real" units
+    and hides details of hardware (like LCD control bytes, ...).
+    Layer provides useful, simple to use functions for car controller.</p>
+
+<p>#### Car controller
+    Car controller drives the car. It uses information provided by
+    sensors and adjust speed and direction based on those.
+    It also handles user interaction (start/stop tests, display diagnostics).</p>
+
+<h3>
+<a id="source-files" class="anchor" href="#source-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>Source files:</h3>
+
+<p>hw.[ch]   hardware drivers
+  hwdefs.h  hardware definitions
+  hal.[ch]  hardware abstraction layer
+  main.c    car controller and tests</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Carproject maintained by <a href="https://github.com/liupengking1">liupengking1</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-57685134-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+
+  </body>
+</html>
