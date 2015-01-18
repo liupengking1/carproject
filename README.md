@@ -1,7 +1,7 @@
 # carproject
 Embedded car racing project at Aalto University.
 
-Usage
+### Usage
 
   When car is powered on, it displays initialization messages on the LCD screen.
   When everything is ready, display shows "Drive Test." "Press button..."
@@ -22,7 +22,7 @@ Usage
   and are not covered by this document.
 
 
-Algorithm description
+### Algorithm description
 
   Driving algorithm is very simple. It constantly tracks stripe position and
   changes car direction when stripe is not in the middle.
@@ -52,25 +52,25 @@ Algorithm description
     car_time_ms()
 
 
-Implementaton
+### Implementaton
 
 Implementation is divided to three layers:
 
-  Hardware drivers
+  #### Hardware drivers
     Hardware drivers handle all interaction with hardware.
     Interface hides ports, interrupts, delays and hardware settings.
 
-  Hardware abstraction layer
+  #### Hardware abstraction layer
     This layer converts all hardware-specific units to "real" units
     and hides details of hardware (like LCD control bytes, ...).
     Layer provides useful, simple to use functions for car controller.
 
-  Car controller
+  #### Car controller
     Car controller drives the car. It uses information provided by
     sensors and adjust speed and direction based on those.
     It also handles user interaction (start/stop tests, display diagnostics).
 
-Source files:
+### Source files:
   hw.[ch]   hardware drivers
   hwdefs.h  hardware definitions
   hal.[ch]  hardware abstraction layer
